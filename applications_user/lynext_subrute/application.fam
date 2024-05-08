@@ -1,5 +1,5 @@
 App(
-    appid="subghz_bruteforcer_lynext",
+    appid="lynext_subrute",
     name="Lynext SuBrute",
     apptype=FlipperAppType.EXTERNAL,
     entry_point="subbrute_app",
