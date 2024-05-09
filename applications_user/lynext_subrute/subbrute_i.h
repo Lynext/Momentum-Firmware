@@ -31,7 +31,7 @@
 #include "views/subbrute_attack_view.h"
 #include "views/subbrute_main_view.h"
 
-#define SUBBRUTEFORCER_VER "Lynext SuBrute 0.2"
+#define SUBBRUTEFORCER_VER "Lynext SuBrute 0.3"
 
 #ifdef FURI_DEBUG
 //#define SUBBRUTE_FAST_TRACK false
