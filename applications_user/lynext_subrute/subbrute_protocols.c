@@ -473,8 +473,8 @@ static const char* subbrute_protocol_names[] = {
     [SubBruteAttackPT226024bit330] = "PT2260 24bit 330MHz",
     [SubBruteAttackPT226024bit390] = "PT2260 24bit 390MHz",
     [SubBruteAttackPT226024bit433] = "PT2260 24bit 433MHz",
-    [Lynext_SubBruteAttackPT226024bit433_FULLByB] = "[L] PT2260 433 FULL (6) (By BTN)",
-    [Lynext_SubBruteAttackPT226024bit433_FULLByK] = "[L] PT2260 433 FULL (6) (By KEY)",
+    [Lynext_SubBruteAttackPT226024bit433_FULLByB] = "PT2260 433 FULL ByB",
+    [Lynext_SubBruteAttackPT226024bit433_FULLByK] = "PT2260 433 FULL ByK",
     [SubBruteAttackLoadFile] = "BF existing dump",
     [SubBruteAttackTotalCount] = "Total Count",
 };
@@ -708,7 +708,7 @@ void subbrute_protocol_create_candidate_for_default(
         //const int BTN_SIZE = 6;
         const int STEP_INC = 1;
 
-        const uint8_t lut[] = {0x00, 0x01, 0x02, 0x03}; // 00, 01, 10, 11
+        const uint8_t lut[] = {0x00, 0x01, 0x02, 0x03}; // DIP SWITCH LUT_SIZE = 3 & {0x00, 0x01, 0x03}
         const size_t lutSize = 4;
 
         const uint8_t btns[] = {0x01, 0x04, 0x08, 0x0C, 0xEC, 0xE5};
@@ -724,7 +724,7 @@ void subbrute_protocol_create_candidate_for_default(
         }
         
         total <<= 8;
-        total |= btns[(step * STEP_INC) / (16 * 16 * 16 * 16)]; // 16 ^ lutSize
+        total |= btns[(step * STEP_INC) / (65536)]; // lutSize ^ 8
 
         for(int i = 0; i < 8; i++) {
             p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
@@ -735,7 +735,7 @@ void subbrute_protocol_create_candidate_for_default(
         //const int BTN_SIZE = 6;
         const int STEP_INC = 1;
 
-        const uint8_t lut[] = {0x00, 0x01, 0x02, 0x03}; // 00, 01, 10, 11
+        const uint8_t lut[] = {0x00, 0x01, 0x02, 0x03}; // DIP SWITCH LUT_SIZE = 3 & {0x00, 0x01, 0x03}
         const size_t lutSize = 4;
 
         const uint8_t btns[] = {0x01, 0x04, 0x08, 0x0C, 0xEC, 0xE5};
@@ -757,9 +757,6 @@ void subbrute_protocol_create_candidate_for_default(
             p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
         }
 
-        for(int i = 0; i < 8; i++) {
-            p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
-        }
     }
     else {
         for(int i = 0; i < 8; i++) {
