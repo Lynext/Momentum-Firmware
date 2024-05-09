@@ -283,14 +283,14 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
     if(model->is_attacking) {
         canvas_set_color(canvas, ColorBlack);
         canvas_set_font(canvas, FontSecondary);
-        if (!drawSignal)
-        {
+        if(!drawSignal) {
             canvas_draw_str_aligned(canvas, 64, 2, AlignCenter, AlignTop, attack_name);
-        }
-        else
-        {
+        } else {
             FuriString* str = furi_string_alloc();
-            subbrute_protocol_create_candidate_for_default(str, Lynext_PT2260_FULLByK, model->current_step);
+            subbrute_protocol_create_candidate_for_default(
+                str,
+                subbrute_protocol(model->attack_type)->file,
+                model->current_step);
             canvas_draw_str_aligned(canvas, 64, 2, AlignCenter, AlignTop, furi_string_get_cstr(str));
         }
     }
@@ -305,13 +305,12 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
         // Second part with another font, because BigNumber is out of screen bounds
         canvas_set_font(canvas, FontPrimary);
         snprintf(buffer, sizeof(buffer), "%05d", (int)model->max_value);
-        if (model->max_value > 99999)
-        {
-            canvas_draw_str_aligned(canvas, 116, y_frequency + 13, AlignRight, AlignBottom, buffer);
-        }
-        else
-        {
-            canvas_draw_str_aligned(canvas, 107, y_frequency + 13, AlignRight, AlignBottom, buffer);
+        if(model->max_value > 99999) {
+            canvas_draw_str_aligned(
+                canvas, 116, y_frequency + 13, AlignRight, AlignBottom, buffer);
+        } else {
+            canvas_draw_str_aligned(
+                canvas, 107, y_frequency + 13, AlignRight, AlignBottom, buffer);
         }
     } else if(model->max_value <= 0xFF) {
         canvas_set_font(canvas, FontBigNumbers);
@@ -349,13 +348,13 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
         bool drawIcon = false;
 
         const uint8_t y = canvas_height(canvas);
-        if (drawIcon)
-        {
+        if(drawIcon) {
             const uint8_t x = canvas_width(canvas);
             const uint8_t icon_h_offset = 0;
             const uint8_t icon_width_with_offset =
                 icon_animation_get_width(model->icon) + icon_h_offset;
-            const uint8_t icon_v_offset = icon_animation_get_height(model->icon); // + vertical_offset;
+            const uint8_t icon_v_offset =
+                icon_animation_get_height(model->icon); // + vertical_offset;
             canvas_draw_icon_animation(
                 canvas, x - icon_width_with_offset, y - icon_v_offset, model->icon);
         }
@@ -366,11 +365,10 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
         elements_progress_bar(canvas, 8, 37, 110, progress_value > 1 ? 1 : progress_value);
         runningForTicks += 1;
 
-        if (runningForTicks > 1)
-        {
+        if(runningForTicks > 1) {
             currentRunningStep += (model->current_step - oldCurrentStep);
         }
-        
+
         oldCurrentStep = model->current_step;
 
         uint32_t currentTime = furi_hal_rtc_get_timestamp();
@@ -389,14 +387,14 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
             sizeof(buffer),
             "x%d",
             model->repeat_count); // + subbrute_protocol_repeats_count(model->attack_type));
-        
+
         canvas_draw_str(canvas, 4, y - 8, buffer);
         canvas_draw_str(canvas, 4, y - 1, "repeats");
 
-        snprintf(buffer,sizeof(buffer),"%02d:%02d:%02d",hoursLeft, minutesLeft, secondsLeft);
+        snprintf(buffer, sizeof(buffer), "%02d:%02d:%02d", hoursLeft, minutesLeft, secondsLeft);
         canvas_draw_str(canvas, 86, y - 1, buffer);
 
-        snprintf(buffer,sizeof(buffer),"%d/s",tryPerSec);
+        snprintf(buffer, sizeof(buffer), "%d/s", tryPerSec);
         canvas_draw_str(canvas, 92, y - 10, buffer);
 
         elements_button_center(canvas, "Stop");
