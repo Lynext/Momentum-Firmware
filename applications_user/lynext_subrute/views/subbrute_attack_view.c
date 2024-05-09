@@ -292,6 +292,7 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
                 subbrute_protocol(model->attack_type)->file,
                 model->current_step);
             canvas_draw_str_aligned(canvas, 64, 2, AlignCenter, AlignTop, furi_string_get_cstr(str));
+            furi_string_free(str);
         }
     }
 
@@ -342,6 +343,7 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
                 subbrute_protocol(model->attack_type)->file,
                 model->current_step);
             canvas_draw_str_aligned(canvas, 64, 40, AlignCenter, AlignTop, furi_string_get_cstr(str));
+            furi_string_free(str);
         }
         
         snprintf(
