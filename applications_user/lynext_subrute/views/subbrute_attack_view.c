@@ -45,9 +45,9 @@ void subbrute_attack_view_set_callback(
 }
 
 uint32_t attackStartTime = 0;
-uint64_t currentRunningStep = 0;
-uint64_t oldCurrentStep = 0;
-uint32_t runningForTicks = 0;
+int currentRunningStep = 0;
+int oldCurrentStep = 0;
+int runningForTicks = 0;
 
 bool subbrute_attack_view_input(InputEvent* event, void* context) {
     furi_assert(event);
@@ -314,12 +314,12 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
     const uint8_t y_frequency = 17;
     if(model->max_value > 9999) {
         canvas_set_font(canvas, FontBigNumbers);
-        snprintf(buffer, sizeof(buffer), "%05d/", (uint64_t)model->current_step);
+        snprintf(buffer, sizeof(buffer), "%05d/", (int)model->current_step);
         canvas_draw_str_aligned(canvas, 5, y_frequency, AlignLeft, AlignTop, buffer);
 
         // Second part with another font, because BigNumber is out of screen bounds
         canvas_set_font(canvas, FontPrimary);
-        snprintf(buffer, sizeof(buffer), "%05d", (uint64_t)model->max_value);
+        snprintf(buffer, sizeof(buffer), "%05d", (int)model->max_value);
         if(model->max_value > 99999) {
             canvas_draw_str_aligned(
                 canvas, 116, y_frequency + 13, AlignRight, AlignBottom, buffer);
@@ -330,12 +330,12 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
     } else if(model->max_value <= 0xFF) {
         canvas_set_font(canvas, FontBigNumbers);
         snprintf(
-            buffer, sizeof(buffer), "%03d/%03d", (uint64_t)model->current_step, (uint64_t)model->max_value);
+            buffer, sizeof(buffer), "%03d/%03d", (int)model->current_step, (int)model->max_value);
         canvas_draw_str_aligned(canvas, 64, y_frequency, AlignCenter, AlignTop, buffer);
     } else {
         canvas_set_font(canvas, FontBigNumbers);
         snprintf(
-            buffer, sizeof(buffer), "%04d/%04d", (uint64_t)model->current_step, (uint64_t)model->max_value);
+            buffer, sizeof(buffer), "%04d/%04d", (int)model->current_step, (int)model->max_value);
         canvas_draw_str_aligned(canvas, 64, y_frequency, AlignCenter, AlignTop, buffer);
     }
     canvas_set_font(canvas, FontSecondary);
@@ -406,28 +406,24 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
         // Resolution: 128x64 px
         float progress_value = (float)model->current_step / (float)model->max_value;
         elements_progress_bar(canvas, 8, 37, 110, progress_value > 1 ? 1 : progress_value);
+        runningForTicks += 1;
 
-        if(runningForTicks > 0) 
-        {
+        if(runningForTicks > 1) {
             currentRunningStep += (model->current_step - oldCurrentStep);
-        }
-        else
-        {
-            runningForTicks += 1;
         }
 
         oldCurrentStep = model->current_step;
 
         uint32_t currentTime = furi_hal_rtc_get_timestamp();
-        uint32_t elapsedSeconds = currentTime - attackStartTime;
-        uint32_t triesLeft = model->max_value - model->current_step;
+        int elapsedSeconds = currentTime - attackStartTime;
+        int triesLeft = model->max_value - model->current_step;
 
-        uint32_t tryPerSec = currentRunningStep / elapsedSeconds;
-        uint32_t totalSecondsLeft = (uint32_t)(triesLeft / tryPerSec);
+        int tryPerSec = currentRunningStep / elapsedSeconds;
+        int totalSecondsLeft = (int)(triesLeft / tryPerSec);
 
-        uint32_t hoursLeft = totalSecondsLeft / 3600;
-        uint32_t minutesLeft = (totalSecondsLeft % 3600) / 60;
-        uint32_t secondsLeft = (totalSecondsLeft % 60);
+        int hoursLeft = totalSecondsLeft / 3600;
+        int minutesLeft = (totalSecondsLeft % 3600) / 60;
+        int secondsLeft = (totalSecondsLeft % 60);
 
         snprintf(
             buffer,

@@ -60,7 +60,7 @@ void subbrute_main_view_center_displayed_key(
     uint8_t item_x = TEXT_X - ITEMS_INTERVAL;
     canvas_set_font(canvas, FontSecondary);
 
-    for(size_t i = 0; i < 8; i++) {
+    for(int i = 0; i < 8; i++) {
         char current_value[3] = {0};
         uint8_t byte_value = (uint8_t)(key >> 8 * (7 - i)) & 0xFF;
         snprintf(current_value, sizeof(current_value), "%02X", byte_value);
