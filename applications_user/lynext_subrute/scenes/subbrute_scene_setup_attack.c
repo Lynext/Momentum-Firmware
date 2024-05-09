@@ -109,22 +109,22 @@ bool subbrute_scene_setup_attack_on_event(void* context, SceneManagerEvent event
             // +1
             uint64_t step = subbrute_device_add_step(instance->device, 1);
             subbrute_worker_set_step(instance->worker, step);
-            subbrute_attack_view_set_current_step(view, step);
+            subbrute_attack_view_set_current_step(view, step, instance->device);
         } else if(event.event == SubBruteCustomEventTypeChangeStepUpMore) {
             // +50
             uint64_t step = subbrute_device_add_step(instance->device, 50);
             subbrute_worker_set_step(instance->worker, step);
-            subbrute_attack_view_set_current_step(view, step);
+            subbrute_attack_view_set_current_step(view, step, instance->device);
         } else if(event.event == SubBruteCustomEventTypeChangeStepDown) {
             // -1
             uint64_t step = subbrute_device_add_step(instance->device, -1);
             subbrute_worker_set_step(instance->worker, step);
-            subbrute_attack_view_set_current_step(view, step);
+            subbrute_attack_view_set_current_step(view, step, instance->device);
         } else if(event.event == SubBruteCustomEventTypeChangeStepDownMore) {
             // -50
             uint64_t step = subbrute_device_add_step(instance->device, -50);
             subbrute_worker_set_step(instance->worker, step);
-            subbrute_attack_view_set_current_step(view, step);
+            subbrute_attack_view_set_current_step(view, step, instance->device);
         }
 
         consumed = true;
@@ -132,7 +132,7 @@ bool subbrute_scene_setup_attack_on_event(void* context, SceneManagerEvent event
         if(subbrute_worker_is_running(instance->worker)) {
             instance->device->current_step = subbrute_worker_get_step(instance->worker);
         }
-        subbrute_attack_view_set_current_step(view, instance->device->current_step);
+        subbrute_attack_view_set_current_step(view, instance->device->current_step, instance->device);
         consumed = true;
     }
 

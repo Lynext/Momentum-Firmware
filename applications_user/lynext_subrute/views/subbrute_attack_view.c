@@ -30,6 +30,7 @@ typedef struct {
     uint8_t repeat_count;
     bool is_attacking;
     IconAnimation* icon;
+    SubBruteDevice* device;
 } SubBruteAttackViewModel;
 
 void subbrute_attack_view_set_callback(
@@ -203,7 +204,7 @@ View* subbrute_attack_view_get_view(SubBruteAttackView* instance) {
     return instance->view;
 }
 
-void subbrute_attack_view_set_current_step(SubBruteAttackView* instance, uint64_t current_step) {
+void subbrute_attack_view_set_current_step(SubBruteAttackView* instance, uint64_t current_step, SubBruteDevice* device) {
     furi_assert(instance);
 #ifdef FURI_DEBUG
     //FURI_LOG_D(TAG, "Set step: %d", current_step);
@@ -212,7 +213,7 @@ void subbrute_attack_view_set_current_step(SubBruteAttackView* instance, uint64_
     with_view_model(
         instance->view,
         SubBruteAttackViewModel * model,
-        { model->current_step = current_step; },
+        { model->current_step = current_step; model->device = device;},
         true);
 }
 
@@ -287,10 +288,23 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
             canvas_draw_str_aligned(canvas, 64, 2, AlignCenter, AlignTop, attack_name);
         } else {
             FuriString* str = furi_string_alloc();
-            subbrute_protocol_create_candidate_for_default(
-                str,
-                subbrute_protocol(model->attack_type)->file,
-                model->current_step);
+            if (model->attack_type != SubBruteAttackLoadFile)
+            {
+                subbrute_protocol_create_candidate_for_default(
+                    str,
+                    subbrute_protocol(model->attack_type)->file,
+                    model->current_step);
+            }
+            else if (model->device)
+            {
+                subbrute_protocol_create_candidate_for_existing_file(
+                    str,
+                    model->current_step,
+                    model->device->bit_index,
+                    model->device->key_from_file,
+                    model->device->two_bytes
+                    );
+            }
             canvas_draw_str_aligned(canvas, 64, 2, AlignCenter, AlignTop, furi_string_get_cstr(str));
             furi_string_free(str);
         }
@@ -345,13 +359,15 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
                     subbrute_protocol(model->attack_type)->file,
                     model->current_step);
             }
-            else
+            else if (model->device)
             {
-/*                 subbrute_protocol_create_candidate_for_existing_file(
+                subbrute_protocol_create_candidate_for_existing_file(
                     str,
                     model->current_step,
-                    model->,
-                    ); */
+                    model->device->bit_index,
+                    model->device->key_from_file,
+                    model->device->two_bytes
+                    );
             }
 
             canvas_draw_str_aligned(canvas, 64, 40, AlignCenter, AlignTop, furi_string_get_cstr(str));

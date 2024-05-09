@@ -65,7 +65,7 @@ bool subbrute_scene_run_attack_on_event(void* context, SceneManagerEvent event) 
     if(event.type == SceneManagerEventTypeCustom) {
         uint64_t step = subbrute_worker_get_step(instance->worker);
         instance->device->current_step = step;
-        subbrute_attack_view_set_current_step(view, step);
+        subbrute_attack_view_set_current_step(view, step, instance->device);
 
         if(event.event == SubBruteCustomEventTypeTransmitFinished) {
             notification_message(instance->notifications, &sequence_display_backlight_on);
@@ -95,7 +95,7 @@ bool subbrute_scene_run_attack_on_event(void* context, SceneManagerEvent event) 
     } else if(event.type == SceneManagerEventTypeTick) {
         uint64_t step = subbrute_worker_get_step(instance->worker);
         instance->device->current_step = step;
-        subbrute_attack_view_set_current_step(view, step);
+        subbrute_attack_view_set_current_step(view, step, instance->device);
 
         consumed = true;
     }

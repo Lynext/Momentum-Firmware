@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../subbrute_custom_event.h"
+#include "../subbrute_device.h"
 #include <gui/view.h>
 #include <input/input.h>
 #include <gui/elements.h>
@@ -71,7 +72,7 @@ View* subbrute_attack_view_get_view(SubBruteAttackView* instance);
  * @note The current step represents the current progress of the attack view.
  *       It should be an unsigned 64-bit integer.
  */
-void subbrute_attack_view_set_current_step(SubBruteAttackView* instance, uint64_t current_step);
+void subbrute_attack_view_set_current_step(SubBruteAttackView* instance, uint64_t current_step, SubBruteDevice* device);
 
 /**
  * @class SubBruteAttackView
