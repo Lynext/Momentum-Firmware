@@ -356,6 +356,17 @@ const SubBruteProtocol subbrute_protocol_pt2260_24bit_433 = {
     .file = PT2260FileProtocol};
 
 /**
+ * PT2260 (Princeton) 24bit 433MHz
+ */
+const SubBruteProtocol lynext_subbrute_protocol_pt2260_24bit_433_FULL = {
+    .frequency = 433920000,
+    .bits = 24,
+    .te = 286,
+    .repeat = 4,
+    .preset = FuriHalSubGhzPresetOok650Async,
+    .file = Lynext_PT2260_FULL};
+
+/**
  * Holtek FM 12bit 433MHz
  */
 const SubBruteProtocol subbrute_protocol_holtek_12bit_433 = {
@@ -454,6 +465,7 @@ static const char* subbrute_protocol_names[] = {
     [SubBruteAttackPT226024bit330] = "PT2260 24bit 330MHz",
     [SubBruteAttackPT226024bit390] = "PT2260 24bit 390MHz",
     [SubBruteAttackPT226024bit433] = "PT2260 24bit 433MHz",
+    [Lynext_SubBruteAttackPT226024bit433_FULL] = "PT2260 433MHz FULL",
     [SubBruteAttackLoadFile] = "BF existing dump",
     [SubBruteAttackTotalCount] = "Total Count",
 };
@@ -506,6 +518,7 @@ const SubBruteProtocol* subbrute_protocol_registry[] = {
     [SubBruteAttackPT226024bit330] = &subbrute_protocol_pt2260_24bit_330,
     [SubBruteAttackPT226024bit390] = &subbrute_protocol_pt2260_24bit_390,
     [SubBruteAttackPT226024bit433] = &subbrute_protocol_pt2260_24bit_433,
+    [Lynext_SubBruteAttackPT226024bit433_FULL] = &subbrute_protocol_pt2260_24bit_433,
     [SubBruteAttackLoadFile] = &subbrute_protocol_load_file};
 
 static const char* subbrute_protocol_file_types[] = {
@@ -526,6 +539,7 @@ static const char* subbrute_protocol_file_types[] = {
     [SMC5326FileProtocol] = "SMC5326",
     [UNILARMFileProtocol] = "SMC5326",
     [PT2260FileProtocol] = "Princeton",
+    [Lynext_PT2260_FULL] = "[L] Princeton",
     [HoneywellFileProtocol] = "Honeywell",
     [HoltekFileProtocol] = "Holtek_HT12X",
     [UnknownFileProtocol] = "Unknown"};
@@ -657,7 +671,8 @@ void subbrute_protocol_create_candidate_for_default(
         for(int i = 0; i < 8; i++) {
             p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
         }
-    } else if(file == PT2260FileProtocol) {
+    } 
+    else if(file == PT2260FileProtocol) {
         const uint8_t lut[] = {0x00, 0x01, 0x03}; // 00, 01, 11
         const uint64_t button_open = 0x03; // 11
         //const uint8_t button_lock = 0x0C; // 1100
@@ -676,7 +691,35 @@ void subbrute_protocol_create_candidate_for_default(
         for(int i = 0; i < 8; i++) {
             p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
         }
-    } else {
+    } 
+    else if (file == Lynext_PT2260_FULL)
+    {
+        //const int BTN_SIZE = 6;
+        const int STEP_INC = 1;
+
+        const uint8_t lut[] = {0x00, 0x01, 0x02, 0x03}; // 00, 01, 10, 11
+        const size_t lutSize = 4;
+
+        const uint8_t btns[] = {0x01, 0x04, 0x08, 0x0C, 0xEC, 0xE5};
+        //const size_t btnSize = BTN_SIZE;
+
+        uint64_t total = 0;
+        uint64_t _step = (step * STEP_INC);
+
+        for(size_t j = 0; j < 8; j++) {
+            total |= lut[_step % lutSize] << (2 * j);
+            double sub_step = (double)_step / lutSize;
+            _step = (uint64_t)floor(sub_step);
+        }
+        
+        total <<= 8;
+        total |= btns[(step * STEP_INC) / (16 * 16 * 16 * 16)]; // 16 ^ lutSize
+
+        for(int i = 0; i < 8; i++) {
+            p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
+        }
+    }
+    else {
         for(int i = 0; i < 8; i++) {
             p[i] = (uint8_t)(step >> 8 * (7 - i)) & 0xFF;
         }
@@ -874,7 +917,13 @@ uint64_t
         attack_type == SubBruteAttackPT226024bit390 ||
         attack_type == SubBruteAttackPT226024bit433) {
         max_value = 6561;
-    } else {
+    }
+    else if (attack_type == Lynext_SubBruteAttackPT226024bit433_FULL)
+    {
+        max_value = 256 * 256 * 6; // (256 * 256 * BTN_SIZE) / STEP_INC;
+    }
+    else 
+    {
         FuriString* max_value_s;
         max_value_s = furi_string_alloc();
         for(uint8_t i = 0; i < bits; i++) {

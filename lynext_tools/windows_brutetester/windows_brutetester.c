@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BTN_SIZE 1
+#define BTN_SIZE 6
 #define STEP_INC 1
 
 void customCATINT (char* s1, char* format, uint8_t s2)

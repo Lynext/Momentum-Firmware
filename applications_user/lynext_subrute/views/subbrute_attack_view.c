@@ -294,7 +294,14 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
         // Second part with another font, because BigNumber is out of screen bounds
         canvas_set_font(canvas, FontPrimary);
         snprintf(buffer, sizeof(buffer), "%05d", (int)model->max_value);
-        canvas_draw_str_aligned(canvas, 107, y_frequency + 13, AlignRight, AlignBottom, buffer);
+        if (model->max_value > 99999)
+        {
+            canvas_draw_str_aligned(canvas, 116, y_frequency + 13, AlignRight, AlignBottom, buffer);
+        }
+        else
+        {
+            canvas_draw_str_aligned(canvas, 107, y_frequency + 13, AlignRight, AlignBottom, buffer);
+        }
     } else if(model->max_value <= 0xFF) {
         canvas_set_font(canvas, FontBigNumbers);
         snprintf(

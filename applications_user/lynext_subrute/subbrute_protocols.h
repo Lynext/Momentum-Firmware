@@ -55,6 +55,7 @@ typedef enum {
     SMC5326FileProtocol,
     UNILARMFileProtocol,
     PT2260FileProtocol,
+    Lynext_PT2260_FULL,
     HoneywellFileProtocol,
     HoltekFileProtocol,
     UnknownFileProtocol,
@@ -150,6 +151,7 @@ typedef enum {
     SubBruteAttackPT226024bit330,
     SubBruteAttackPT226024bit390,
     SubBruteAttackPT226024bit433,
+    Lynext_SubBruteAttackPT226024bit433_FULL,
     SubBruteAttackLoadFile,
     SubBruteAttackTotalCount,
 } SubBruteAttacks;

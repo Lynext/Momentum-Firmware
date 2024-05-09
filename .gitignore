@@ -68,4 +68,4 @@ PVS-Studio.log
 .gdbinit
 
 /fbt_options_local.py
-applications_user/lynext_subrute/brute.txt
+lynext_tools/windows_brutetester/brute.txt
