@@ -10,7 +10,7 @@
 #define LUT {0x00, 0x01, 0x02, 0x03}
 #define STEP_INC 1
 
-int lutSpace = 1;
+size_t lutSpace = 1;
 
 void customCATINT (char* s1, char* format, uint8_t s2)
 {
@@ -48,7 +48,7 @@ void brutePrincetonByButton (uint64_t step, char* candidate) {
     total <<= 8;
     total |= btns[(step * STEP_INC) / (lutSpace)];
 
-    for(int i = 0; i < 8; i++) {
+    for(size_t i = 0; i < 8; i++) {
         p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
     }
 
@@ -85,7 +85,7 @@ void brutePrincetonByKey (uint64_t step, char* candidate) {
     total <<= 8;
     total |= btns[(step % btnSize)];
 
-    for(int i = 0; i < 8; i++) {
+    for(size_t i = 0; i < 8; i++) {
         p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
     }
 
@@ -105,7 +105,7 @@ void brutePrincetonByKey (uint64_t step, char* candidate) {
 void bruteCAME (uint64_t step, char* candidate)
 {
     uint8_t p[8];
-    for(int i = 0; i < 8; i++) {
+    for(size_t i = 0; i < 8; i++) {
         p[i] = (uint8_t)(step >> 8 * (7 - i)) & 0xFF;
     }
 
@@ -125,17 +125,17 @@ void bruteCAME (uint64_t step, char* candidate)
 int main ()
 {
     printf("Brute Tester By Lynext\n");
-    for (int i = 0; i < 8; i++) // lutSpace = LUT_SIZE ^ 8
+    for (size_t i = 0; i < 8; i++) // lutSpace = LUT_SIZE ^ 8
     {
         lutSpace *= LUT_SIZE;
     }
     
-    int maxSteps = (lutSpace * BTN_SIZE) / STEP_INC;
-    //int maxSteps = 4096;
+    uint64_t maxSteps = (lutSpace * BTN_SIZE) / STEP_INC;
+    //uint64_t maxSteps = 4096;
 
     FILE *fptr = fopen("brute.txt", "w");
 
-    for (int i = 0; i < maxSteps; i++)
+    for (uint64_t i = 0; i < maxSteps; i++)
     {
         char* str = (char*) malloc(sizeof(64));
         strcpy(str, "");

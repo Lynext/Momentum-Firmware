@@ -614,7 +614,7 @@ void subbrute_protocol_create_candidate_for_existing_file(
     uint64_t file_key,
     bool two_bytes) {
     uint8_t p[8];
-    for(int i = 0; i < 8; i++) {
+    for(uint8_t i = 0; i < 8; i++) {
         p[i] = (uint8_t)(file_key >> 8 * (7 - i)) & 0xFF;
     }
     uint8_t low_byte = step & (0xff);
@@ -662,7 +662,7 @@ void subbrute_protocol_create_candidate_for_default(
         total <<= 9;
         total |= gate1;
 
-        for(int i = 0; i < 8; i++) {
+        for(uint8_t i = 0; i < 8; i++) {
             p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
         }
     } else if(file == UNILARMFileProtocol) {
@@ -679,7 +679,7 @@ void subbrute_protocol_create_candidate_for_default(
         total <<= 9;
         total |= gate1;
 
-        for(int i = 0; i < 8; i++) {
+        for(uint8_t i = 0; i < 8; i++) {
             p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
         }
     } 
@@ -699,14 +699,14 @@ void subbrute_protocol_create_candidate_for_default(
         total <<= 8;
         total |= button_open;
 
-        for(int i = 0; i < 8; i++) {
+        for(uint8_t i = 0; i < 8; i++) {
             p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
         }
     } 
     else if (file == Lynext_PT2260_FULLByB)
     {
-        //const int BTN_SIZE = 7;
-        const int STEP_INC = 1;
+        //const uint8_t BTN_SIZE = 7;
+        const uint8_t STEP_INC = 1;
 
         const uint8_t lut[] = {0x00, 0x01, 0x02, 0x03}; // DIP SWITCH LUT_SIZE = 3 & {0x00, 0x01, 0x03}
         const size_t lutSize = 4;
@@ -726,14 +726,14 @@ void subbrute_protocol_create_candidate_for_default(
         total <<= 8;
         total |= btns[(step * STEP_INC) / (65536)]; // lutSize ^ 8
 
-        for(int i = 0; i < 8; i++) {
+        for(uint8_t i = 0; i < 8; i++) {
             p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
         }
     }
     else if (file == Lynext_PT2260_FULLByK)
     {
-        //const int BTN_SIZE = 6;
-        const int STEP_INC = 1;
+        //const uint8_t BTN_SIZE = 6;
+        const uint8_t STEP_INC = 1;
 
         const uint8_t lut[] = {0x00, 0x01, 0x02, 0x03}; // DIP SWITCH LUT_SIZE = 3 & {0x00, 0x01, 0x03}
         const size_t lutSize = 4;
@@ -753,13 +753,13 @@ void subbrute_protocol_create_candidate_for_default(
         total <<= 8;
         total |= btns[(step % btnSize)];
 
-        for(int i = 0; i < 8; i++) {
+        for(uint8_t i = 0; i < 8; i++) {
             p[i] = (uint8_t)(total >> 8 * (7 - i)) & 0xFF;
         }
 
     }
     else {
-        for(int i = 0; i < 8; i++) {
+        for(uint8_t i = 0; i < 8; i++) {
             p[i] = (uint8_t)(step >> 8 * (7 - i)) & 0xFF;
         }
     }
