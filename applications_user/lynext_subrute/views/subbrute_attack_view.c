@@ -10,6 +10,8 @@
 
 #define TAG "SubBruteAttackView"
 
+const bool drawSignal = true;
+
 struct SubBruteAttackView {
     View* view;
     SubBruteAttackViewCallback callback;
@@ -281,7 +283,16 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
     if(model->is_attacking) {
         canvas_set_color(canvas, ColorBlack);
         canvas_set_font(canvas, FontSecondary);
-        canvas_draw_str_aligned(canvas, 64, 2, AlignCenter, AlignTop, attack_name);
+        if (!drawSignal)
+        {
+            canvas_draw_str_aligned(canvas, 64, 2, AlignCenter, AlignTop, attack_name);
+        }
+        else
+        {
+            FuriString* str = furi_string_alloc();
+            subbrute_protocol_create_candidate_for_default(str, Lynext_PT2260_FULLByK, model->current_step);
+            canvas_draw_str_aligned(canvas, 64, 2, AlignCenter, AlignTop, furi_string_get_cstr(str));
+        }
     }
 
     // Current Step / Max value

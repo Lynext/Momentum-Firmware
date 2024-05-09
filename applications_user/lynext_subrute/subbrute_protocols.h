@@ -350,6 +350,11 @@ void subbrute_protocol_file_generate_file(
     uint64_t file_key,
     bool two_bytes);
 
+void subbrute_protocol_create_candidate_for_default(
+    FuriString* candidate,
+    SubBruteFileProtocol file,
+    uint64_t step);
+
 /**
  * @brief Calculates the maximum value based on the attack type, number of bits, and whether two bytes are used.
  *
