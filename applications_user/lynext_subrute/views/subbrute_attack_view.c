@@ -366,7 +366,7 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
         int elapsedSeconds = currentTime - attackStartTime;
         int triesLeft = model->max_value - model->current_step;
 
-        double tryPerSec = (int)((float)currentRunningStep * 2 / elapsedSeconds) / 2.0;
+        int tryPerSec = currentRunningStep / elapsedSeconds;
         int totalSecondsLeft = (int)(triesLeft / tryPerSec);
 
         int hoursLeft = totalSecondsLeft / 3600;
@@ -385,7 +385,7 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
         snprintf(buffer,sizeof(buffer),"%02d:%02d:%02d",hoursLeft, minutesLeft, secondsLeft);
         canvas_draw_str(canvas, 86, y - 1, buffer);
 
-        snprintf(buffer,sizeof(buffer),"%.1f/s",tryPerSec);
+        snprintf(buffer,sizeof(buffer),"%d/s",tryPerSec);
         canvas_draw_str(canvas, 92, y - 10, buffer);
 
         elements_button_center(canvas, "Stop");
