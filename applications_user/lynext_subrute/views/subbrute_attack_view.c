@@ -152,7 +152,7 @@ SubBruteAttackView* subbrute_attack_view_alloc() {
 
     with_view_model(
         instance->view,
-        SubBruteAttackViewModel * model,
+        SubBruteAttackViewModel* model,
         {
             model->icon = icon_animation_alloc(&A_Sub1ghz_14);
             view_tie_icon_animation(instance->view, model->icon);
@@ -192,7 +192,7 @@ void subbrute_attack_view_free(SubBruteAttackView* instance) {
     with_view_model(
         instance->view,
         SubBruteAttackViewModel * model,
-        { icon_animation_free(model->icon); },
+        { icon_animation_free(model->icon); subbrute_device_free(model->device);},
         false);
 
     view_free(instance->view);
