@@ -4,8 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BTN_SIZE 6
+#define BTN_SIZE 7
+#define BTNS {0x01, 0x04, 0x08, 0x0C, 0xA2, 0xEC, 0xE5}
 #define LUT_SIZE 4
+#define LUT {0x00, 0x01, 0x02, 0x03}
 #define STEP_INC 1
 
 int lutSpace = 1;
@@ -27,10 +29,10 @@ void customCAT (char* s1, char* format, char* s2)
 }
 
 void brutePrincetonByButton (uint64_t step, char* candidate) {
-    const uint8_t lut[] = {0x00, 0x01, 0x02, 0x03}; // DIP SWITCH LUT_SIZE = 3 & {0x00, 0x01, 0x03}
+    const uint8_t lut[] = LUT; // DIP SWITCH LUT_SIZE = 3 & {0x00, 0x01, 0x03}
     const size_t lutSize = LUT_SIZE;
 
-    const uint8_t btns[] = {0x01, 0x04, 0x08, 0x0C, 0xEC, 0xE5};
+    const uint8_t btns[] = BTNS;
     const size_t btnSize = BTN_SIZE;
 
     uint8_t p[8];
@@ -64,10 +66,10 @@ void brutePrincetonByButton (uint64_t step, char* candidate) {
 }
 
 void brutePrincetonByKey (uint64_t step, char* candidate) {
-    const uint8_t lut[] = {0x00, 0x01, 0x02, 0x03}; // DIP SWITCH LUT_SIZE = 3 & {0x00, 0x01, 0x03}
+    const uint8_t lut[] = LUT; // DIP SWITCH LUT_SIZE = 3 & {0x00, 0x01, 0x03}
     const size_t lutSize = LUT_SIZE;
 
-    const uint8_t btns[] = {0x01, 0x04, 0x08, 0x0C, 0xEC, 0xE5};
+    const uint8_t btns[] = BTNS;
     const size_t btnSize = BTN_SIZE;
 
     uint8_t p[8];
@@ -137,7 +139,7 @@ int main ()
     {
         char* str = (char*) malloc(sizeof(64));
         strcpy(str, "");
-        bruteCAME(i, str);
+        brutePrincetonByKey(i, str);
         float percent = ((float)i / maxSteps) * 100.0;
 
         printf("%s | %d (%%%.1f)\n", str, i, percent);

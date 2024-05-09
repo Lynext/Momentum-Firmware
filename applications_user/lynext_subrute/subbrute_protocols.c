@@ -705,13 +705,13 @@ void subbrute_protocol_create_candidate_for_default(
     } 
     else if (file == Lynext_PT2260_FULLByB)
     {
-        //const int BTN_SIZE = 6;
+        //const int BTN_SIZE = 7;
         const int STEP_INC = 1;
 
         const uint8_t lut[] = {0x00, 0x01, 0x02, 0x03}; // DIP SWITCH LUT_SIZE = 3 & {0x00, 0x01, 0x03}
         const size_t lutSize = 4;
 
-        const uint8_t btns[] = {0x01, 0x04, 0x08, 0x0C, 0xEC, 0xE5};
+        const uint8_t btns[] = {0x01, 0x04, 0x08, 0x0C, 0xA2, 0xEC, 0xE5};
         //const size_t btnSize = BTN_SIZE;
 
         uint64_t total = 0;
@@ -738,8 +738,8 @@ void subbrute_protocol_create_candidate_for_default(
         const uint8_t lut[] = {0x00, 0x01, 0x02, 0x03}; // DIP SWITCH LUT_SIZE = 3 & {0x00, 0x01, 0x03}
         const size_t lutSize = 4;
 
-        const uint8_t btns[] = {0x01, 0x04, 0x08, 0x0C, 0xEC, 0xE5};
-        const size_t btnSize = 6;
+        const uint8_t btns[] = {0x01, 0x04, 0x08, 0x0C, 0xEC, 0xA2, 0xE5};
+        const size_t btnSize = 7;
 
         uint64_t total = 0;
         uint64_t _step = ((step / btnSize) * STEP_INC);
@@ -959,7 +959,7 @@ uint64_t
     }
     else if (attack_type == Lynext_SubBruteAttackPT226024bit433_FULLByB || attack_type == Lynext_SubBruteAttackPT226024bit433_FULLByK)
     {
-        max_value = 65536 * 6; // (LUT_SIZE ^ 8 * BTN_SIZE) / STEP_INC;
+        max_value = 65536 * 7; // (LUT_SIZE ^ 8 * BTN_SIZE) / STEP_INC;
     }
     else 
     {

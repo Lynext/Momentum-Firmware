@@ -192,7 +192,7 @@ void subbrute_attack_view_free(SubBruteAttackView* instance) {
     with_view_model(
         instance->view,
         SubBruteAttackViewModel * model,
-        { icon_animation_free(model->icon); subbrute_device_free(model->device);},
+        { icon_animation_free(model->icon);},
         false);
 
     view_free(instance->view);
