@@ -100,14 +100,36 @@ void brutePrincetonByKey (uint64_t step, char* candidate) {
     }
 }
 
+void bruteCAME (uint64_t step, char* candidate)
+{
+    uint8_t p[8];
+    for(int i = 0; i < 8; i++) {
+        p[i] = (uint8_t)(step >> 8 * (7 - i)) & 0xFF;
+    }
+
+    size_t size = sizeof(uint64_t);
+    for(size_t i = 0; i < size; i++) {
+        if(p[i] != 0) 
+        {
+            customCATINT(candidate, "%02X ", p[i]);
+        } 
+        else 
+        {
+            customCAT(candidate, "%s ", "00");
+        }
+    }
+}
+
 int main ()
 {
-    printf("DA BRUTE TESTER!!!\n");
+    printf("Brute Tester By Lynext\n");
     for (int i = 0; i < 8; i++) // lutSpace = LUT_SIZE ^ 8
     {
         lutSpace *= LUT_SIZE;
     }
+    
     int maxSteps = (lutSpace * BTN_SIZE) / STEP_INC;
+    //int maxSteps = 4096;
 
     FILE *fptr = fopen("brute.txt", "w");
 
@@ -115,7 +137,7 @@ int main ()
     {
         char* str = (char*) malloc(sizeof(64));
         strcpy(str, "");
-        brutePrincetonByKey(i, str);
+        bruteCAME(i, str);
         float percent = ((float)i / maxSteps) * 100.0;
 
         printf("%s | %d (%%%.1f)\n", str, i, percent);
