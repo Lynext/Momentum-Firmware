@@ -338,10 +338,22 @@ void subbrute_attack_view_draw(Canvas* canvas, void* context) {
         else
         {
             FuriString* str = furi_string_alloc();
-            subbrute_protocol_create_candidate_for_default(
-                str,
-                subbrute_protocol(model->attack_type)->file,
-                model->current_step);
+            if (model->attack_type != SubBruteAttackLoadFile)
+            {
+                subbrute_protocol_create_candidate_for_default(
+                    str,
+                    subbrute_protocol(model->attack_type)->file,
+                    model->current_step);
+            }
+            else
+            {
+/*                 subbrute_protocol_create_candidate_for_existing_file(
+                    str,
+                    model->current_step,
+                    model->,
+                    ); */
+            }
+
             canvas_draw_str_aligned(canvas, 64, 40, AlignCenter, AlignTop, furi_string_get_cstr(str));
             furi_string_free(str);
         }
