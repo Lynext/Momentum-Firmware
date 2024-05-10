@@ -3,7 +3,7 @@
 
 #define TAG "SubBruteSceneLoadFile"
 
-#define MIN_TD 0
+#define MIN_TD 1
 #define MAX_TD 255
 #define MIN_REP 1
 #define MAX_REP 100
