@@ -39,6 +39,7 @@
  */
 typedef enum {
     CAMEFileProtocol,
+    DooyaFileProtocol,
     NICEFileProtocol,
     ChamberlainFileProtocol,
     LinearFileProtocol,
@@ -115,6 +116,7 @@ typedef enum {
  * - `SubBruteAttackTotalCount`: Total number of sub-brute attacks.
  */
 typedef enum {
+    SubBruteAttackDooya40bit433,
     SubBruteAttackCAME12bit303,
     SubBruteAttackCAME12bit307,
     SubBruteAttackCAME12bit315,

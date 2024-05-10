@@ -58,6 +58,14 @@ const SubBruteProtocol subbrute_protocol_came_12bit_433 = {
     .preset = FuriHalSubGhzPresetOok650Async,
     .file = CAMEFileProtocol};
 
+const SubBruteProtocol subbrute_protocol_dooya_40bit_433 = {
+    .frequency = 433920000,
+    .bits = 40,
+    .te = 0,
+    .repeat = 3,
+    .preset = FuriHalSubGhzPresetOok650Async,
+    .file = DooyaFileProtocol};
+
 /**
  * CAME 12bit 868MHz
  */
@@ -436,6 +444,7 @@ const SubBruteProtocol subbrute_protocol_load_file =
     {0, 0, 0, 3, FuriHalSubGhzPresetOok650Async, UnknownFileProtocol};
 
 static const char* subbrute_protocol_names[] = {
+    [SubBruteAttackDooya40bit433] = "Dooya 40bit 433MHz",
     [SubBruteAttackCAME12bit303] = "CAME 12bit 303MHz",
     [SubBruteAttackCAME12bit307] = "CAME 12bit 307MHz",
     [SubBruteAttackCAME12bit315] = "CAME 12bit 315MHz",
@@ -490,6 +499,7 @@ static const char* subbrute_protocol_presets[] = {
 };
 
 const SubBruteProtocol* subbrute_protocol_registry[] = {
+    [SubBruteAttackDooya40bit433] = &subbrute_protocol_dooya_40bit_433,
     [SubBruteAttackCAME12bit303] = &subbrute_protocol_came_12bit_303,
     [SubBruteAttackCAME12bit307] = &subbrute_protocol_came_12bit_307,
     [SubBruteAttackCAME12bit315] = &subbrute_protocol_came_12bit_315,
@@ -533,6 +543,7 @@ const SubBruteProtocol* subbrute_protocol_registry[] = {
 
 static const char* subbrute_protocol_file_types[] = {
     [CAMEFileProtocol] = "CAME",
+    [DooyaFileProtocol] = "Dooya",
     [NICEFileProtocol] = "Nice FLO",
     [ChamberlainFileProtocol] = "Cham_Code",
     [LinearFileProtocol] = "Linear",
